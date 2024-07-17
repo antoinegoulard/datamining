@@ -93,3 +93,5 @@ if uploaded_file is not None:
             data[data.columns] = scaler.fit_transform(data)
         st.write("Data normalization completed.")
         st.dataframe(data.head())
+
+#NewPullRequest
