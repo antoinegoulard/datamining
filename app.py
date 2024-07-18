@@ -16,8 +16,7 @@ st.markdown("""### Collaborators:
 - **Antoine GOULARD**: antoine.goulard@efrei.net
 """)
  
-st.markdown("---")
- 
+st.markdown("---") 
 # Function to load and store data in session state
 def load_data(uploaded_file, separator, header_option):
     header = 0 if header_option == "Yes" else None
@@ -29,6 +28,7 @@ if 'data' not in st.session_state:
     st.session_state['data'] = None
  
 # File uploading
+
 uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
 if uploaded_file is not None:
     separator = st.text_input("Enter the separator used in the file", value=",")
@@ -72,7 +72,7 @@ if st.session_state['data'] is not None:
                 df[col] = le.fit_transform(df[col].astype(str))
                 label_encoders[col] = le
             return df, label_encoders
- 
+
         def decode_categorical_columns(df, encoders):
             for col, le in encoders.items():
                 df[col] = le.inverse_transform(df[col].astype(int))
@@ -111,6 +111,7 @@ if st.session_state['data'] is not None:
                 data = pd.DataFrame(imputer.fit_transform(data), columns=data.columns)
             st.session_state['data'] = data
             st.write("Missing value handling completed.")
+
             st.dataframe(data)
  
     with tabs[2]:
@@ -118,7 +119,7 @@ if st.session_state['data'] is not None:
         st.subheader("Data Normalization")
         norm_method = st.selectbox("Select normalization method:",
                                    ["Min-Max Scaling", "Z-Score Standardization"])
-       
+     
         if st.button("Apply Normalization"):
             data = st.session_state['data'].copy()
             numeric_columns = data.select_dtypes(include=['int', 'float']).columns
@@ -138,7 +139,7 @@ if st.session_state['data'] is not None:
  
         viz_option = st.selectbox("Select visualization type:", ["Histogram", "Box Plot"])
         selected_column = st.selectbox("Select column for visualization:", data.columns)
- 
+
         if st.button("Generate Visualization"):
             plt.figure(figsize=(10, 6))
             if viz_option == "Histogram":
