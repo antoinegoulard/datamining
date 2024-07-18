@@ -7,6 +7,12 @@ from sklearn.impute import SimpleImputer, KNNImputer
 from sklearn.preprocessing import MinMaxScaler, StandardScaler, LabelEncoder, OneHotEncoder
 from sklearn.cluster import KMeans, DBSCAN
 from sklearn.decomposition import PCA
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression, LinearRegression, Ridge
+from sklearn.metrics import classification_report, mean_squared_error
+from sklearn.svm import SVC
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
 
 st.title('DATA MINING PROJECT')
 st.subheader('BIA 1 - Group 4')
@@ -220,3 +226,56 @@ if st.session_state['data'] is not None:
                 st.dataframe(data)
  
                 plot_clusters(numeric_data, labels, "DBSCAN")
+
+with tabs[5]:
+        ## Prediction
+        st.subheader("Prediction")
+        pred_task = st.selectbox("Select prediction task type:", ["Regression", "Classification"])
+ 
+        if pred_task == "Regression":
+            reg_algo = st.selectbox("Select regression algorithm:", ["Linear Regression", "Ridge Regression"])
+            target_column = st.selectbox("Select target column for prediction:", data.columns)
+ 
+            if st.button("Apply Regression"):
+                data = st.session_state['data'].copy()
+                X = data.drop(columns=[target_column])
+                y = data[target_column]
+ 
+                # Encode categorical columns
+                X = pd.get_dummies(X, drop_first=True)
+ 
+                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+ 
+                if reg_algo == "Linear Regression":
+                    reg_model = LinearRegression()
+                elif reg_algo == "Ridge Regression":
+                    reg_model = Ridge()
+ 
+                reg_model.fit(X_train, y_train)
+                y_pred = reg_model.predict(X_test)
+                mse = mean_squared_error(y_test, y_pred)
+                st.write(f"Mean Squared Error: {mse}")
+ 
+        elif pred_task == "Classification":
+            class_algo = st.selectbox("Select classification algorithm:", ["Logistic Regression", "Support Vector Classifier"])
+            target_column = st.selectbox("Select target column for prediction:", data.columns)
+ 
+            if st.button("Apply Classification"):
+                data = st.session_state['data'].copy()
+                X = data.drop(columns=[target_column])
+                y = data[target_column]
+ 
+                # Encode categorical columns
+                X = pd.get_dummies(X, drop_first=True)
+ 
+                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+ 
+                if class_algo == "Logistic Regression":
+                    class_model = LogisticRegression()
+                elif class_algo == "Support Vector Classifier":
+                    class_model = SVC()
+ 
+                class_model.fit(X_train, y_train)
+                y_pred = class_model.predict(X_test)
+                st.write("Classification Report:")
+                st.text(classification_report(y_test, y_pred))
