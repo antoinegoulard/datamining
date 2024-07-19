@@ -23,25 +23,35 @@ st.markdown("""### Collaborators:
 """)
  
 st.markdown("---") 
-# Function to load and store data in session state
-def load_data(uploaded_file, separator, header_option):
+# Function to load and store data
+def load_data(uploaded_file, separator, header_option, custom_column_names=None):
     header = 0 if header_option == "Yes" else None
     data = pd.read_csv(uploaded_file, sep=separator, header=header)
+    if header is None:
+        if custom_column_names:
+            data.columns = custom_column_names
+        else:
+            data.columns = [f'Column_{i+1}' for i in range(data.shape[1])]
     st.session_state['data'] = data
  
-# Check if data is already loaded in session state
 if 'data' not in st.session_state:
     st.session_state['data'] = None
  
-# File uploading
-
-uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
+uploaded_file = st.file_uploader("Choose a CSV file", type=["csv", "data"])
 if uploaded_file is not None:
     separator = st.text_input("Enter the separator used in the file", value=",")
     header_option = st.selectbox("Does your CSV file have a header?", options=["Yes", "No"], index=0)
+    custom_column_names = None
+ 
+    if header_option == "No":
+        # Allow user to enter custom column names
+        column_names = st.text_input("Enter custom column names, separated by commas")
+        if column_names:
+            custom_column_names = column_names.split(',')
+ 
     if st.button("Load Data"):
-        load_data(uploaded_file, separator, header_option)
-        st.write("Data loaded successfully!")
+        load_data(uploaded_file, separator, header_option, custom_column_names)
+        st.success("Data loaded successfully!")
  
 # Ensure data is loaded before displaying tabs
 if st.session_state['data'] is not None:
@@ -50,12 +60,12 @@ if st.session_state['data'] is not None:
     tabs = st.tabs(["Data Description", "Data Pre-processing and Cleaning", "Data Normalization", "Visualization", "Clustering", "Prediction"])
  
     with tabs[0]:
-        #### Data Description
+        #Data Description
         st.subheader("Data Description")
         st.write("Preview of the data:")
         st.dataframe(data)
        
-        #### Statistical Summary
+        #Statistical Summary
         st.subheader("Statistical Summary")
         st.write("Basic statistics of the data:")
         st.write(data.describe(include='all'))
@@ -66,7 +76,7 @@ if st.session_state['data'] is not None:
         st.write(missing_values)
  
     with tabs[1]:
-        #### Data Pre-processing and Cleaning
+        #Data Pre-processing and Cleaning
         st.subheader("Data Pre-processing and Cleaning")
         method = st.selectbox("Select method to handle missing values:",
                               ["Delete rows", "Delete columns", "Replace with mean", "Replace with median", "Replace with mode", "KNN Imputation", "Simple Imputation"])
@@ -121,7 +131,7 @@ if st.session_state['data'] is not None:
             st.dataframe(data)
  
     with tabs[2]:
-        ## Data Normalization
+        #Data Normalization
         st.subheader("Data Normalization")
         norm_method = st.selectbox("Select normalization method:",
                                    ["Min-Max Scaling", "Z-Score Standardization"])
@@ -140,7 +150,7 @@ if st.session_state['data'] is not None:
             st.dataframe(data)
  
     with tabs[3]:
-        ## Visualization of the cleaned data
+        #Visualization of the cleaned data
         st.subheader("Visualization of the cleaned data")
  
         viz_option = st.selectbox("Select visualization type:", ["Histogram", "Box Plot"])
@@ -160,7 +170,7 @@ if st.session_state['data'] is not None:
             st.pyplot(plt)
  
     with tabs[4]:
-        ## Clustering
+        #Clustering
         st.subheader("Clustering")
         cluster_algo = st.selectbox("Select clustering algorithm:", ["K-Means", "DBSCAN"])
  
@@ -174,7 +184,7 @@ if st.session_state['data'] is not None:
             plt.title(f'{algorithm_name} Clustering')
             st.pyplot(plt)
  
-            # Calculating and displaying cluster densities for DBSCAN
+            #Calculating and displaying cluster densities for DBSCAN
             if algorithm_name == "DBSCAN":
                 cluster_info = []
                 for cluster in np.unique(labels):
@@ -227,8 +237,8 @@ if st.session_state['data'] is not None:
  
                 plot_clusters(numeric_data, labels, "DBSCAN")
 
-with tabs[5]:
-        ## Prediction
+    with tabs[5]:
+        #Prediction
         st.subheader("Prediction")
         pred_task = st.selectbox("Select prediction task type:", ["Regression", "Classification"])
  
@@ -241,7 +251,7 @@ with tabs[5]:
                 X = data.drop(columns=[target_column])
                 y = data[target_column]
  
-                # Encode categorical columns
+                #Encode categorical columns
                 X = pd.get_dummies(X, drop_first=True)
  
                 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
@@ -265,7 +275,7 @@ with tabs[5]:
                 X = data.drop(columns=[target_column])
                 y = data[target_column]
  
-                # Encode categorical columns
+                #Encode categorical columns
                 X = pd.get_dummies(X, drop_first=True)
  
                 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
