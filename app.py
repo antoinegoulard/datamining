@@ -17,7 +17,7 @@ from sklearn.compose import ColumnTransformer
 st.title('DATA MINING PROJECT')
 st.subheader('BIA 1 - Group 4')
 st.markdown("""### Collaborators:
-- **Mohammad DARMSY LADHA**: mohammad.darmsy-ladha@efrei.net
+- **Mohammad DARMSY LADHA**: mohammad.darmsy.ladha@efrei.net
 - **Ramy ABDELMOULA**: ramy.abdelmoula@efrei.net
 - **Antoine GOULARD**: antoine.goulard@efrei.net
 """)
