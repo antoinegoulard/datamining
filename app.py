@@ -23,7 +23,7 @@ st.markdown("""### Collaborators:
 """)
  
 st.markdown("---") 
-# Function to load and store data in session state
+# Function to load and store data
 def load_data(uploaded_file, separator, header_option, custom_column_names=None):
     header = 0 if header_option == "Yes" else None
     data = pd.read_csv(uploaded_file, sep=separator, header=header)
@@ -31,7 +31,6 @@ def load_data(uploaded_file, separator, header_option, custom_column_names=None)
         if custom_column_names:
             data.columns = custom_column_names
         else:
-            # Créer des noms de colonne en commençant par 1 au lieu de 0
             data.columns = [f'Column_{i+1}' for i in range(data.shape[1])]
     st.session_state['data'] = data
  
