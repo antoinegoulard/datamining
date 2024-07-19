@@ -2,6 +2,9 @@
 
 ### **How to install (local) ?**
 
+Link of the github :
+https://github.com/antoinegoulard/datamining
+
 clone github : 
 `git clone https://github.com/antoinegoulard/datamining.git`
 
@@ -29,11 +32,6 @@ run command :
 ### If trouble to make step 3 (trust files):
 Execute your powershell as administrator and run :
 `Set-ExecutionPolicy Unrestricted`
-
-### **How to run (online) ?**
-
-Click on this link :
-https://datamining-project-grp4.streamlit.app/
 
 
 
