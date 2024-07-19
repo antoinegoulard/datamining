@@ -1,5 +1,6 @@
 # README
 
+## **DATA MINING PROJECT**
 ### **How to install (local) ?**
 
 Link of the github :
@@ -29,10 +30,16 @@ run command :
 run command :
 `streamlit run app.py`
 
-### If trouble to make step 3 (trust files):
-Execute your powershell as administrator and run :
+##### *If trouble to make step 3 (trust files):*
+*Execute your powershell as administrator and run :*
 `Set-ExecutionPolicy Unrestricted`
 
+### **Contributors :**
 
+*BIA 1 - Group 4*
+
+- **Mohammad DARMSY LADHA**: mohammad.darmsy.ladha@efrei.net
+- **Ramy ABDELMOULA**: ramy.abdelmoula@efrei.net
+- **Antoine GOULARD**: antoine.goulard@efrei.net
 
 
