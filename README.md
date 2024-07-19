@@ -26,7 +26,7 @@ run command :
 run command :
 `pip install streamlit`
 
-#### *Step 3 : run app*
+#### *Step 5 : run app*
 run command :
 `streamlit run app.py`
 
